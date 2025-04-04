@@ -28,10 +28,20 @@ const Home = () => {
         <h1 className="text-3xl font-bold mb-4">Articles</h1>
         {error && <p className="text-red-600">{error}</p>}
         {articles.length === 0 ? (
-          <p>No articles found</p>
+          <p className="text-2xl font-semibold">No articles found</p>
         ) : (
-          <ul>
-            
+          <ul className="space-y-5">
+            {articles.map((article) => (
+              <li key={article.id} className="p-4 border rounded shadow">
+                <h2 className="text-xl">{article.title}</h2>
+                <p>{article.content}</p>
+                {article.publishedAt && (
+                  <p className="text-sm text-gray-500">
+                    Published: {new Date(article.publishedAt).toLocaleString()}
+                  </p>
+                )}
+              </li>
+            ))}
           </ul>
         )}
       </div>
