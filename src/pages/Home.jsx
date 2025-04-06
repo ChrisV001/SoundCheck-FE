@@ -11,7 +11,7 @@ const Home = () => {
     axios
       .get("http://localhost:8080/articles/all")
       .then((response) => {
-        if (response.status.statusCode === 200) {
+        if (response.data.statusCode === 200) {
           setArticles(response.data.articleList);
         } else {
           setError(response.data.message);
@@ -20,7 +20,7 @@ const Home = () => {
       .catch((err) => {
         setError(err.message);
       });
-  });
+  }, []);
   return (
     <div>
       <Navbar />
