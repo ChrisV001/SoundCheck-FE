@@ -14,7 +14,7 @@ const Register = ({ onRegisterSuccess }) => {
 
     if (password !== confirmPassword) {
       setError("Error passwords do not match");
-      return <p></p>;
+      return;
     }
 
     try {

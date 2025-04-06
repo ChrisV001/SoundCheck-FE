@@ -4,6 +4,7 @@ import "./App.css";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
+import ExhaustSystems from "./pages/ExhaustSystems";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           element={<Login onLoginSuccess={(data) => console.log(data)} />}
         />
         <Route path="/register" element={<Register />} />
+        <Route path="/exhaust-systems" element={<ExhaustSystems />} />
       </Routes>
     </Router>
   );
