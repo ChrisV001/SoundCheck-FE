@@ -23,6 +23,16 @@ const ExhaustSystems = () => {
       });
   }, []);
 
+    const filteredExhaustSystems = exhaustSystems.filter((es) => {
+        const query = searchQuery.toLowerCase();
+        const matchesExhaust = es.name?.toLowerCase().includes(query);
+        const matchesCarModels = 
+        es.carModels && 
+        Array.from(es.carModels).some(
+            (carModel) => carModel.model && carModel.model.toLowerCase().includes(query)
+        )
+    });
+
   return (
     <div>
       <Navbar />
