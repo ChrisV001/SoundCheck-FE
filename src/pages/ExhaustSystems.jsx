@@ -10,7 +10,7 @@ const ExhaustSystems = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/exhaustsystem/all")
+      .get("http://localhost:8080/exhaustsystems/all")
       .then((response) => {
         if (response.data.statusCode === 200) {
           setExhaustSystems(response.data.exhaustSystemList);
