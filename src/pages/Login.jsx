@@ -1,28 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = ({ onLoginSuccess }) => {
+  const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const nav = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:8080/user/login", {
-        email,
-        password,
-      });
-
-      if (response.data.statusCode === 200) {
-        onLoginSuccess(response.data);
-      } else {
-        setError(response.data.message || "Login failed");
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || "Error logging in");
+      await login(email, password);
+      nav("/");
+    } catch (error) {
+      setError(error.response?.data?.message || "Login Failed");
     }
   };
 
@@ -40,7 +36,8 @@ const Login = ({ onLoginSuccess }) => {
             <h2 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign in to your account
             </h2>
-            <form className="space-y-4 md:space-y-6" onSubmit={(e) => handleSubmit(e)}>
+            {error && <p className="text-red-600">{error}</p>}
+            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
                   htmlFor="email"
@@ -52,6 +49,7 @@ const Login = ({ onLoginSuccess }) => {
                   type="email"
                   name="email"
                   id="email"
+                  value={email}
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@company.com"
@@ -70,6 +68,7 @@ const Login = ({ onLoginSuccess }) => {
                   name="password"
                   id="password"
                   placeholder="••••••••"
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required={true}
@@ -103,7 +102,7 @@ const Login = ({ onLoginSuccess }) => {
                 </a>
               </div>
               <button
-                type="button"
+                type="submit"
                 className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 onClick={(e) => handleSubmit(e)}
               >
