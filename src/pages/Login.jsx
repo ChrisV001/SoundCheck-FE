@@ -1,24 +1,34 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
-import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../features/auth/AuthThunk";
 
 const Login = ({ onLoginSuccess }) => {
-  const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const nav = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      await login(email, password);
+      await dispatch(login({ email, password })).unwrap();
       nav("/");
     } catch (error) {
-      setError(error.response?.data?.message || "Login Failed");
+      console.error("Login failed:", error);
+      let message = "Login failed. Please try again.";
+      if (typeof error === "string") {
+        message = error;
+      } else if (error?.response?.data?.message) {
+        message = error.response.data.message;
+      } else if (error?.message) {
+        message = error.message;
+      }
+      setError(message);
     }
   };
 
