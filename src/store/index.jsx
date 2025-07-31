@@ -20,15 +20,17 @@ const persistConfig = {
 
 const persistedAuth = persistReducer(persistConfig, authReducer);
 
+const actionLogger = (storeAPI) => (next) => (action) => {
+  console.log("🟢 ACTION DISPATCHED:", action.type, action);
+  return next(action);
+};
+
 export const store = configureStore({
   reducer: { auth: persistedAuth },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        ignoredActionPaths: ["register", "rehydrate"],
-      },
-    }),
+      serializableCheck: false,
+    }).concat(actionLogger),
 });
 
 export const persistor = persistStore(store);

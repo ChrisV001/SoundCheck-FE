@@ -2,6 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../store/authSlice";
+import { persistor } from "../store/index";
 
 const Navbar = () => {
   const isAuthenticated = useSelector((s) => s.auth.isAuthenticated);
@@ -10,6 +11,8 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    window.localStorage.removeItem("persist:rememberMe");
+    persistor.purge();
     navigate("/login");
     console.log(isAuthenticated);
   };

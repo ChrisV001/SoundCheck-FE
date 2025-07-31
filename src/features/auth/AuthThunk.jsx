@@ -3,7 +3,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ email, password }, { rejectWithValue }) => {
+  async ({ email, password, remember }, { rejectWithValue }) => {
+    window.localStorage.setItem("persist:rememberMe", remember ? "true" : "false");
     try {
       const { data } = await apiClient.post("/auth/login", { email, password });
       handleLoginResponse(data);

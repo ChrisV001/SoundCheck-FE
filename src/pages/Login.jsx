@@ -8,6 +8,7 @@ const Login = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [remember, setRemember] = useState(false);
   const nav = useNavigate();
   const dispatch = useDispatch();
 
@@ -16,7 +17,7 @@ const Login = ({ onLoginSuccess }) => {
     setError("");
 
     try {
-      await dispatch(login({ email, password })).unwrap();
+      await dispatch(login({ email, password, remember })).unwrap();
       nav("/");
     } catch (error) {
       console.error("Login failed:", error);
@@ -93,6 +94,8 @@ const Login = ({ onLoginSuccess }) => {
                       type="checkbox"
                       className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
                       required={false}
+                      checked={remember}
+                      onChange={(e) => setRemember(e.target.checked)}
                     />
                   </div>
                   <div className="ml-3 text-sm">
