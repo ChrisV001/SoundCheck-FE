@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import ExhaustSystems from "./pages/ExhaustSystems";
 import AddExhaustSystems from "./pages/AddExhaustSystems";
+import ListAllUsers from "./pages/ListAllUsers";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/exhaust-systems" element={<ExhaustSystems />} />
         <Route path="/add-exhaust-systems" element={<AddExhaustSystems />} />
+        <Route path="/list-users" element={<ListAllUsers />} />
       </Routes>
     </Router>
   );
