@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import apiClient from "../api/client";
 
 const ListAllUsers = () => {
   const [error, setError] = useState(null);
@@ -22,6 +23,32 @@ const ListAllUsers = () => {
       });
   }, []);
 
+  const handleDelete = async () => {
+    const idString = window.prompt(
+      "Enter the ID of the user that you want to delete."
+    );
+
+    if (!idString) return;
+
+    const id = Number(idString);
+    if (Number.isNaN(id)) return alert("Invalid ID");
+
+    if (!window.confirm(`Confirm deletion of user #${id}?`)) return;
+
+    try {
+      const response = await apiClient.delete(`/user/${id}`);
+      const responseBody = response.data;
+
+      alert(responseBody.message || "Deleted!");
+
+      setUsers((prev) => prev.filter((u) => u.id !== id));
+    } catch (error) {
+      const message =
+        error.response?.data?.message || error.message || "Deleted failed";
+      alert(message);
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -35,6 +62,9 @@ const ListAllUsers = () => {
             {users.map((user) => (
               <li key={user.id} className="p-4 border rounded shadow">
                 <p>
+                  <span>ID:</span> {user.id}
+                </p>
+                <p>
                   <span>Username:</span> {user.username}
                 </p>
                 <p>
@@ -47,12 +77,18 @@ const ListAllUsers = () => {
                   <span>Created at:</span> {user.createdAt}
                 </p>
                 <p>
-                    <span>Updated at:</span> {user.updatedAt}
+                  <span>Updated at:</span> {user.updatedAt}
                 </p>
               </li>
             ))}
           </ul>
         )}
+        <button
+          onClick={handleDelete}
+          className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer"
+        >
+          Delete User
+        </button>
       </div>
       <Footer />
     </div>
