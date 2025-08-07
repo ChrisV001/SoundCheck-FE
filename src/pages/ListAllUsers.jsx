@@ -3,10 +3,12 @@ import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import apiClient from "../api/client";
+import { useNavigate } from "react-router-dom";
 
 const ListAllUsers = () => {
   const [error, setError] = useState(null);
   const [users, setUsers] = useState([]);
+  const nav = useNavigate();
 
   useEffect(() => {
     axios
@@ -88,6 +90,12 @@ const ListAllUsers = () => {
           className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer"
         >
           Delete User
+        </button>
+        <button
+          className="ml-7 mt-4 px-4 py-2 cursor-pointer rounded bg-[#535bf2]"
+          onClick={() => nav("/create-user")}
+        >
+          Create a new user
         </button>
       </div>
       <Footer />

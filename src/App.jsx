@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import ExhaustSystems from "./pages/ExhaustSystems";
 import AddExhaustSystems from "./pages/AddExhaustSystems";
 import ListAllUsers from "./pages/ListAllUsers";
+import CreateUser from "./pages/CreateUser";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/exhaust-systems" element={<ExhaustSystems />} />
         <Route path="/add-exhaust-systems" element={<AddExhaustSystems />} />
         <Route path="/list-users" element={<ListAllUsers />} />
+        <Route path="/create-user" element={<CreateUser />} />
       </Routes>
     </Router>
   );
