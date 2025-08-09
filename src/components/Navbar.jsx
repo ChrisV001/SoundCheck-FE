@@ -34,21 +34,33 @@ const Navbar = () => {
               Articles
             </Link>
           </li>
-          <li>
-            {isAuthenticated ? (
-              <Link
-                onClick={handleLogout}
-                className="text-gray-300 hover:text-white"
-                to={"/login"}
-              >
-                Logout
-              </Link>
-            ) : (
+          {isAuthenticated ? (
+            <>
+              <li>
+                <Link
+                  onClick={handleLogout}
+                  className="text-gray-300 hover:text-white"
+                  to={"/login"}
+                >
+                  Logout
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className=" text-gray-300 hover:text-white"
+                  to={"/my-profile"}
+                >
+                  My Profile
+                </Link>
+              </li>
+            </>
+          ) : (
+            <li>
               <Link to="/login" className="text-gray-300 hover:text-white">
                 Login
               </Link>
-            )}
-          </li>
+            </li>
+          )}
         </ul>
       </div>
     </nav>
