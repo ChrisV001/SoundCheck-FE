@@ -9,6 +9,8 @@ import AddExhaustSystems from "./pages/AddExhaustSystems";
 import ListAllUsers from "./pages/ListAllUsers";
 import CreateUser from "./pages/CreateUser";
 import MyProfile from "./pages/MyProfile";
+import RequireRole from "./components/RequireRole";
+import Forbidden from "./pages/Forbidden";
 
 function App() {
   return (
@@ -22,9 +24,24 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/exhaust-systems" element={<ExhaustSystems />} />
         <Route path="/add-exhaust-systems" element={<AddExhaustSystems />} />
-        <Route path="/list-users" element={<ListAllUsers />} />
-        <Route path="/create-user" element={<CreateUser />} />
+        <Route
+          path="/list-users"
+          element={
+            <RequireRole roles={["ADMIN"]}>
+              <ListAllUsers />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/create-user"
+          element={
+            <RequireRole roles={["ADMIN"]}>
+              <CreateUser />
+            </RequireRole>
+          }
+        />
         <Route path="/my-profile" element={<MyProfile />} />
+        <Route path="/403" element={<Forbidden />} />
       </Routes>
     </Router>
   );
