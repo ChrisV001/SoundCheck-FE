@@ -35,8 +35,17 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const status = error.response?.status;
+    const msg = (error.response?.data?.message || "").toLowerCase();
+
+    const looksExpired =
+      status === 401 || msg.includes("expired") || msg.includes("jwt");
+
+    if (looksExpired) {
+      localStorage.setItem("sessionNotice", "expired");
+
       store.dispatch(logout());
+      window.location.replace("/login");
     }
     return Promise.reject(error);
   }
