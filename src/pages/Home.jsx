@@ -6,6 +6,7 @@ import axios from "axios";
 const Home = () => {
   const [articles, setArticles] = useState([]);
   const [error, setError] = useState(null);
+  const [commentsByArticle, setCommentsByArticle] = useState({});
 
   useEffect(() => {
     axios
@@ -19,6 +20,24 @@ const Home = () => {
       })
       .catch((err) => {
         setError(err.message);
+      });
+
+    axios
+      .get("http://localhost:8080/comments/all")
+      .then((response) => {
+        if (response.data.statusCode === 200) {
+          const grouped = {};
+          response.data.commentList.forEach((comment) => {
+            if (!grouped[comment.articleDTO.id]) {
+              grouped[comment.articleDTO.id] = [];
+            }
+            grouped[comment.articleDTO.id].push(comment);
+          });
+          setCommentsByArticle(grouped);
+        }
+      })
+      .catch((error) => {
+        setError(error.message);
       });
   }, []);
   return (
@@ -40,6 +59,25 @@ const Home = () => {
                     Published: {new Date(article.publishedAt).toLocaleString()}
                   </p>
                 )}
+                {/* Comment Section */}
+                <div className="mt-4">
+                  <h3 className="font-semibold">Comments:</h3>
+                  {commentsByArticle[article.id] &&
+                  commentsByArticle[article.id].length > 0 ? (
+                    <ul className="ml-4 list-disc">
+                      {commentsByArticle[article.id].map((comment) => (
+                        <li key={comment.id} className="text-gray-200">
+                          <span className="font-medium">
+                            {comment.userDTO?.username ?? "Unknown"}
+                          </span>{" "}
+                          {comment.content ?? "Content not fetched"}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-gray-200">No comments yet</p>
+                  )}
+                </div>
               </li>
             ))}
           </ul>
