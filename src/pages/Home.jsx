@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import CommentsSection from "../components/CommentsSection";
 
 const Home = () => {
   const [articles, setArticles] = useState([]);
@@ -60,24 +61,7 @@ const Home = () => {
                   </p>
                 )}
                 {/* Comment Section */}
-                <div className="mt-4">
-                  <h3 className="font-semibold">Comments:</h3>
-                  {commentsByArticle[article.id] &&
-                  commentsByArticle[article.id].length > 0 ? (
-                    <ul className="ml-4 list-disc">
-                      {commentsByArticle[article.id].map((comment) => (
-                        <li key={comment.id} className="text-gray-200">
-                          <span className="font-medium">
-                            {comment.userDTO?.username ?? "Unknown"}
-                          </span>{" "}
-                          {comment.content ?? "Content not fetched"}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="text-gray-200">No comments yet</p>
-                  )}
-                </div>
+                <CommentsSection articleId={article.id} pageSize={5} />
               </li>
             ))}
           </ul>
